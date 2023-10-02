@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,12 +15,14 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array<string, mixed>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'Nombre', // Cambiado desde 'name'
+        'CorreoElectronico', // Cambiado desde 'email'
+        'Contrasena', // Cambiado desde 'password'
+        'NumeroTelefono',
+        'RolID',
     ];
 
     /**
@@ -29,7 +31,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'Contrasena', // Cambiado desde 'password'
         'remember_token',
     ];
 
@@ -40,6 +42,23 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'Contrasena' => 'hashed', // Cambiado desde 'password'
     ];
+
+    protected $primaryKey = 'ID';
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'RolID');
+    }
+
+    public function trips()
+    {
+        return $this->hasMany(Trip::class, 'UsuarioID');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'UsuarioID');
+    }
 }
